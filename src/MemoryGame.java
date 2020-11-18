@@ -15,6 +15,9 @@ import java.awt.event.*;
 
 public class MemoryGame implements GameInterface {
 
+    private BagInterface<String> newWordBag, seenWordBag;
+    private static final double PROBABILITY_OF_NEW_WORD = .5;
+
     public MemoryGame() {
         JFrame frame = new JFrame("Test");
         JButton newButton = new JButton("NEW");
@@ -28,6 +31,8 @@ public class MemoryGame implements GameInterface {
         frame.add(newButton, BorderLayout.LINE_START);
         frame.add(seenButton, BorderLayout.LINE_END);
         frame.setVisible(true);
+        newWordBag = new ArrayBag<>();
+        seenWordBag = new ArrayBag<>();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -38,6 +43,17 @@ public class MemoryGame implements GameInterface {
 
     }
 
+    public String generateNewWord() {
+        String word;
+        if(Math.random() > PROBABILITY_OF_NEW_WORD)
+            word = newWordBag.remove();
+        else
+            word = seenWordBag.remove();
+        seenWordBag.add(word);
+        return word;
+    }
+
+
     public static void main(String[] args) {
         MemoryGame memoryGame = new MemoryGame();
         Scanner answer = new Scanner(System.in); // scanner to read user inputs
@@ -47,7 +63,7 @@ public class MemoryGame implements GameInterface {
         System.out.println("Ready?");
 
 
-    } // end main
+    }
 
 
 }// end MemoryGame
