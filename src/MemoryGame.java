@@ -15,28 +15,88 @@ import java.awt.event.*;
 
 public class MemoryGame implements GameInterface {
 
+    private JTextField currentWordField, pointField, livesField;
+    private BagInterface<String> newWordBag, seenWordBag;
+    private static final double PROBABILITY_OF_NEW_WORD = .5;
+    private boolean isWordNew;
+    private int numberOfPoints;
+
     public MemoryGame() {
-        JFrame frame = new JFrame("Test");
+        numberOfPoints = 0;
+        JFrame frame = generateFrame();
+        frame.setVisible(true);
+        newWordBag = generateNewWordBag();
+        seenWordBag = new ArrayBag<>();
+    }
+
+    private BagInterface<String> generateNewWordBag() {
+
+    }
+
+    private JFrame generateFrame() {
+        JFrame frame = new JFrame("Game");
         JButton newButton = new JButton("NEW");
         newButton.addActionListener(this);
-        newButton.setPreferredSize(new Dimension(200,100));
         JButton seenButton = new JButton("SEEN");
         seenButton.addActionListener(this);
-        seenButton.setPreferredSize(new Dimension(200,100));
-        frame.setLayout(new BorderLayout());
-        frame.setSize(400, 200);
-        frame.add(newButton, BorderLayout.LINE_START);
-        frame.add(seenButton, BorderLayout.LINE_END);
-        frame.setVisible(true);
+        currentWordField = new JTextField("Sans");
+        currentWordField.setEditable(false);
+        currentWordField.setHorizontalAlignment(JTextField.CENTER);
+        pointField = new JTextField("0 points");
+        pointField.setEditable(false);
+        pointField.setHorizontalAlignment(JTextField.LEFT);
+        livesField = new JTextField("3 lives");
+        livesField.setEditable(false);
+        livesField.setHorizontalAlignment(JTextField.RIGHT);
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.weightx = 0;
+        c.gridwidth = 2;
+        frame.setSize(400, 250);
+        frame.add(currentWordField, c);
+        c.gridwidth = 1;
+        c.gridy = 1;
+        c.weightx = .5;
+        c.ipady = 150;
+        frame.add(newButton, c);
+        c.gridx = 1;
+        frame.add(seenButton, c);
+        c.ipady = 0;
+        c.gridy = 2;
+        c.gridx = 0;
+        frame.add(pointField, c);
+        c.gridx = 1;
+        frame.add(livesField, c);
+        return frame;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "NEW")
-            System.out.println("New Button has been pushed");
+            if(isWordNew)
+                numberOfPoints++;
         if (e.getActionCommand() == "SEEN")
-            System.out.println("Seen Button has been pushed");
-
+            if(!isWordNew)
+                numberOfPoints++;
+        currentWordField.setText(generateNewWord());
+        pointField.setText(numberOfPoints + " points");
     }
+
+    public String generateNewWord() {
+        String word;
+        if(Math.random() > PROBABILITY_OF_NEW_WORD || seenWordBag.isEmpty()) {
+            word = newWordBag.remove();
+            isWordNew = true;
+        }
+        else {
+            word = seenWordBag.remove();
+            isWordNew = false;
+        }
+        seenWordBag.add(word);
+        return word;
+    }
+
 
     public static void main(String[] args) {
         MemoryGame memoryGame = new MemoryGame();
@@ -47,7 +107,7 @@ public class MemoryGame implements GameInterface {
         System.out.println("Ready?");
 
 
-    } // end main
+    }
 
 
 }// end MemoryGame

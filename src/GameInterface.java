@@ -5,4 +5,6 @@ public interface GameInterface extends ActionListener {
 
     public void actionPerformed(ActionEvent e);
 
+    public String generateNewWord();
+
 }
