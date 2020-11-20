@@ -11,14 +11,7 @@ public final class ArrayBag<T> implements BagInterface<T> {
     private static final int DEFAULT_CAPACITY = 25;
     private boolean integrityOk;
     private static final int MAX_CAPACITY = 10000;
-    public int numberOfLives = 3;
-    public boolean gameOver;
-    private int numberOfPoints;
     public String gameOverMessage = ("Game Over! Score:" + numberOfPoints);
-    //  BagInterface<String> aBag = new ArrayBag<>();
-
-    public String[] nonSeenWords = {"Sans", "Boogie", "Hatred", "Bull", "Bingo", "Bullseye", "Beige", "Hitch",
-            "Why", "No"};
 
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
@@ -73,10 +66,6 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return result;
     }
 
-    public void removeEvery(T anEntry) {
-        while (remove(anEntry)) ; //Loops until it does not remove an entry
-    }
-
     private int getIndexOf(T anEntry) { //private so that the index of entries cannot be directly accessed by clients
         int where = -1;
         boolean found = false;
@@ -129,8 +118,6 @@ public final class ArrayBag<T> implements BagInterface<T> {
         } //could be foreach or Arrays.copyof
         return result;
     }
-//----------------------------------------------------------------------------------------------------------------------
-
     private boolean isArrayFull() { // Assumes that there has not been anything removed/lost from bag
         return numberOfEntries >= bag.length;
     }
@@ -144,80 +131,9 @@ public final class ArrayBag<T> implements BagInterface<T> {
     }
 
     private void checkIntegrity() {
-        if (integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
+        if (!integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
     }
-
-
-    // attempts at methods for game
-//----------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * determines if word has already been added to bag
-     *
-     * @param anEntry
-     * @return boolean
-     */
-    public boolean seenBefore(T anEntry) {
-        checkIntegrity();
-        if (getFrequencyOf(anEntry) > 0) { // if number of times word is in array bag is more than 0
-            return true;
-            //deductLife(numberOfLives); // decides how many lives are left
-        }
-        System.out.println("Correct!");
-        return false;
-
-    }// end seenBefore
-//----------------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Decides whether to deduct one life or set game to over
-     *
-     * @param numberOfLives
-     * @return number of lives, boolean */
-    public int deductLife(int numberOfLives) {
-        if (numberOfLives == 0) {
-            gameOver = true; // if lives at 0, set gameOver to true and end game
-        }
-        numberOfLives = numberOfLives - 1; // if 1+ lives, deduct one life and continue on
-        System.out.println("Wrong!" + numberOfLives + " lives left"); // displays number of lives left
-
-        return numberOfLives; // returns number of lives left.
-    } // end deductLife
-
-
-    public boolean isGameOver(boolean gameOver) {
-        return gameOver;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-    // adds a random word from list of unseen words to bag
-    public void addToSeen() {
-        BagInterface<String> aBag = new ArrayBag<>();
-        String anEntry = nonSeenWords[(int) (Math.random() * nonSeenWords.length)];
-        aBag.add(anEntry);
-        System.out.print(anEntry);
-
-    } // end addToSeen
-
-// running game (not finished)
-    public T game(T anEntry) {
-        while (gameOver == false) {
-            Scanner answer = new Scanner(System.in);
-            String word;
-            // enter SEEN or NEW
-            System.out.println(anEntry);
-            word = answer.next();
-            if (seenBefore((T) word)) { // if this has been seen before, deduct a life or end game
-                deductLife(numberOfLives); }
-
-
-
-
-        }
-    return null;
-
-    }// end game
+        
 }
 
 
