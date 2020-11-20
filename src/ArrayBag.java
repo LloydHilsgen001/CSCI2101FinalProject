@@ -11,7 +11,6 @@ public final class ArrayBag<T> implements BagInterface<T> {
     private static final int DEFAULT_CAPACITY = 25;
     private boolean integrityOk;
     private static final int MAX_CAPACITY = 10000;
-    public String gameOverMessage = ("Game Over! Score:" + numberOfPoints);
 
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
