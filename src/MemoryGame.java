@@ -31,8 +31,7 @@ public class MemoryGame implements GameInterface {
         seenWordBag = new ArrayBag<>(); // contains words that have been seen
         JFrame frame = generateFrame();
         frame.setVisible(true);
-    } // end constructor
-//----------------------------------------------------------------------------------------------------------------------
+    } 
 
     // creates bag of new words
     private BagInterface<String> generateNewWordBag() {
@@ -45,8 +44,8 @@ public class MemoryGame implements GameInterface {
             System.out.println("wordlist.txt not found");
         }
         return bag;
-    } // end generateNewWordBag
-//----------------------------------------------------------------------------------------------------------------------
+    } 
+  
     /** Creates the interface the player interacts with
      * creates SEEN button, NEW button; displays current word (currentWorldField), number of points player has (pointField)
      * number of lives player has remaining (livesField), and dimensions for grids of each
@@ -108,7 +107,6 @@ public class MemoryGame implements GameInterface {
         frame.add(livesField, c);
         return frame;
     } // end generateFrame
-//----------------------------------------------------------------------------------------------------------------------
 
     /**
      * Handles action events associated with buttons, dispays/updates points, lives, and player losers scenario.
@@ -140,7 +138,7 @@ public class MemoryGame implements GameInterface {
         if(numberOfLives <= 0) // if the number of lives are at zero, game ends
             currentWordField.setText("You have lost!"); // player loses scenario
     } // end actionPerformed
-//----------------------------------------------------------------------------------------------------------------------
+
     // generates the word player sees
     public String generateNewWord() {
         String word;
@@ -156,7 +154,6 @@ public class MemoryGame implements GameInterface {
         return word;
     } // end generateNewWord
 
-//----------------------------------------------------------------------------------------------------------------------
    // displays rules, runs game
     public static void main(String[] args) {
         MemoryGame memoryGame = new MemoryGame();
@@ -165,8 +162,5 @@ public class MemoryGame implements GameInterface {
        System.out.println("Rules: We will present you a word. If this word has been shown before, "); // begin rules
         System.out.println("click 'SEEN', if not click 'NEW'. If you give the wrong answer 3 times, you lose."); // end rules
         System.out.println("Ready?");
-
-
   }// end main
-
-}// end MemoryGame
+} //end memorygame
