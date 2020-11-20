@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  * A class of bags whose entries are stored in a fixed-size array.
  */
@@ -9,6 +11,7 @@ public final class ArrayBag<T> implements BagInterface<T> {
     private static final int DEFAULT_CAPACITY = 25;
     private boolean integrityOk;
     private static final int MAX_CAPACITY = 10000;
+    public String gameOverMessage = ("Game Over! Score:" + numberOfPoints);
 
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
@@ -40,7 +43,7 @@ public final class ArrayBag<T> implements BagInterface<T> {
 
     public T remove() {
         checkIntegrity();
-        return removeEntry((int)(Math.random()*numberOfEntries));
+        return removeEntry((int) (Math.random() * numberOfEntries));
         //Returns a random entry in the bag.
     }
 
@@ -61,10 +64,6 @@ public final class ArrayBag<T> implements BagInterface<T> {
             numberOfEntries--;
         }
         return result;
-    }
-
-    public void removeEvery(T anEntry) {
-         while(remove(anEntry)); //Loops until it does not remove an entry
     }
 
     private int getIndexOf(T anEntry) { //private so that the index of entries cannot be directly accessed by clients
@@ -89,7 +88,7 @@ public final class ArrayBag<T> implements BagInterface<T> {
 
     public void clear() {
         checkIntegrity();
-        for(int i=0; i<numberOfEntries; i++)
+        for (int i = 0; i < numberOfEntries; i++)
             bag[i] = null; //sets all items in bag to null
         numberOfEntries = 0; //resets counter
     }
@@ -119,7 +118,6 @@ public final class ArrayBag<T> implements BagInterface<T> {
         } //could be foreach or Arrays.copyof
         return result;
     }
-
     private boolean isArrayFull() { // Assumes that there has not been anything removed/lost from bag
         return numberOfEntries >= bag.length;
     }
@@ -135,5 +133,8 @@ public final class ArrayBag<T> implements BagInterface<T> {
     private void checkIntegrity() {
         if (!integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
     }
-
+        
 }
+
+
+
