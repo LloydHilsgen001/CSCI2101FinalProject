@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.awt.event.*;
 
@@ -19,18 +21,27 @@ public class MemoryGame implements GameInterface {
     private BagInterface<String> newWordBag, seenWordBag;
     private static final double PROBABILITY_OF_NEW_WORD = .5;
     private boolean isWordNew;
-    private int numberOfPoints;
+    private int numberOfPoints, numberOfLives;
 
     public MemoryGame() {
+        numberOfLives = 3;
         numberOfPoints = 0;
-        JFrame frame = generateFrame();
-        frame.setVisible(true);
         newWordBag = generateNewWordBag();
         seenWordBag = new ArrayBag<>();
+        JFrame frame = generateFrame();
+        frame.setVisible(true);
     }
 
     private BagInterface<String> generateNewWordBag() {
-
+        BagInterface<String> bag = new ArrayBag<String>(50);
+        try {
+            Scanner data = new Scanner(new File("wordlist.txt"));
+            while(data.hasNext())
+                bag.add(data.next());
+        } catch(FileNotFoundException e) {
+            System.out.println("wordlist.txt not found");
+        }
+        return bag;
     }
 
     private JFrame generateFrame() {
@@ -39,7 +50,7 @@ public class MemoryGame implements GameInterface {
         newButton.addActionListener(this);
         JButton seenButton = new JButton("SEEN");
         seenButton.addActionListener(this);
-        currentWordField = new JTextField("Sans");
+        currentWordField = new JTextField(generateNewWord());
         currentWordField.setEditable(false);
         currentWordField.setHorizontalAlignment(JTextField.CENTER);
         pointField = new JTextField("0 points");
@@ -76,11 +87,18 @@ public class MemoryGame implements GameInterface {
         if (e.getActionCommand() == "NEW")
             if(isWordNew)
                 numberOfPoints++;
+            else
+                numberOfLives--;
         if (e.getActionCommand() == "SEEN")
             if(!isWordNew)
                 numberOfPoints++;
+            else
+                numberOfLives--;
         currentWordField.setText(generateNewWord());
         pointField.setText(numberOfPoints + " points");
+        livesField.setText(numberOfLives + " lives");
+        if(numberOfLives <= 0)
+            currentWordField.setText("You have lost!");
     }
 
     public String generateNewWord() {
