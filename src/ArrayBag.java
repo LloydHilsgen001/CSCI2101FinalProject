@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 /**
  * A class of bags whose entries are stored in a fixed-size array.
@@ -12,10 +11,15 @@ public final class ArrayBag<T> implements BagInterface<T> {
     private boolean integrityOk;
     private static final int MAX_CAPACITY = 10000;
 
+    // default constructor.
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
     }
 
+    /**
+     * Constructor
+     * @param desiredCapacity the capacity of the bag being constructed
+     */
     public ArrayBag(int desiredCapacity) {
         integrityOk = false;
         if (desiredCapacity <= MAX_CAPACITY) {
@@ -29,6 +33,11 @@ public final class ArrayBag<T> implements BagInterface<T> {
             throw new IllegalStateException("Attempt to create a bag whose capacity exceeds allowed maximum.");
     }
 
+    /**
+     * Adds a new entry
+     * @param newEntry Entry to be added.
+     * @return whether entry was succesfully added
+     */
     public boolean add(T newEntry) {
         checkIntegrity();
         if (isArrayFull()) {
@@ -40,12 +49,21 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return true;
     }
 
+    /**
+     * Removes a random entry
+     * @return the entry removed
+     */
     public T remove() {
         checkIntegrity();
         return removeEntry((int) (Math.random() * numberOfEntries));
         //Returns a random entry in the bag.
     }
 
+    /**
+     * Removes the copy of the entry inside the bag
+     * @param anEntry the entry to be removed
+     * @return if the entry was in the bag.
+     */
     public boolean remove(T anEntry) {
         checkIntegrity();
         int index = getIndexOf(anEntry);
@@ -53,7 +71,11 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return anEntry.equals(result);
     }
 
-    //private to make sure that integrity is checked and verify that the correct entry is removed
+    /**
+     * removes a given entry
+     * @param givenIndex index of entry to remove
+     * @return then entry removed
+     */
     private T removeEntry(int givenIndex) {
         T result = null;
         if (!isEmpty() && (givenIndex >= 0)) {
@@ -65,6 +87,11 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return result;
     }
 
+    /**
+     * gets the index of an entry in the bag
+     * @param anEntry Entry to be searched for
+     * @return the index of the entry, or -1 if not found.
+     */
     private int getIndexOf(T anEntry) { //private so that the index of entries cannot be directly accessed by clients
         int where = -1;
         boolean found = false;
@@ -79,12 +106,19 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return where;
     }
 
+    /**
+     * replaces an existing entry with a new one
+     * @param anEntry the entry to be removed
+     * @param newEntry the entry to be added
+     * @return the entry removed.
+     */
     public T replace(T anEntry, T newEntry) {
         add(newEntry); //Adds the new entry to the end
         return removeEntry(getIndexOf(anEntry));
         //Finds existing version of specified entry in bag, then removes and returns it
     }
 
+    //empties the bag.
     public void clear() {
         checkIntegrity();
         for (int i = 0; i < numberOfEntries; i++)
@@ -92,6 +126,11 @@ public final class ArrayBag<T> implements BagInterface<T> {
         numberOfEntries = 0; //resets counter
     }
 
+    /**
+     * Finds how many times an entry is in the bag
+     * @param anEntry The entry to be searched for
+     * @return The number of times the entry is in the bag.
+     */
     public int getFrequencyOf(T anEntry) {
         checkIntegrity();
         int counter = 0;
@@ -103,11 +142,20 @@ public final class ArrayBag<T> implements BagInterface<T> {
         return counter;
     }
 
+    /**
+     * Returns whether an entry is in the bag.
+     * @param anEntry Entry to be checked for if in the bag.
+     * @return True if in the bag, false if not.
+     */
     public boolean contains(T anEntry) {
         checkIntegrity();
         return getFrequencyOf(anEntry) > 0;
     }
 
+    /**
+     * Creates a copy of the array inside the bag and gives it to the user.
+     * @return A copy of the array inside.
+     */
     public T[] toArray() {
         // This is safe because the new array is empty.
         @SuppressWarnings("unchecked")
@@ -117,18 +165,32 @@ public final class ArrayBag<T> implements BagInterface<T> {
         } //could be foreach or Arrays.copyof
         return result;
     }
+
+    /**
+     * Checks whether the bag is full
+     * @return True if full, false if not
+     */
     private boolean isArrayFull() { // Assumes that there has not been anything removed/lost from bag
         return numberOfEntries >= bag.length;
     }
 
+    /**
+     * Gives the number of entries inside bag
+     * @return the number of entries
+     */
     public int getCurrentSize() {
         return numberOfEntries;
     }
 
+    /**
+     * Checks if bag is empty
+     * @return true if empty, false if not.
+     */
     public boolean isEmpty() {
         return numberOfEntries == 0;
     }
 
+    //Checks if bag has been instantiated properly.
     private void checkIntegrity() {
         if (!integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
     }
