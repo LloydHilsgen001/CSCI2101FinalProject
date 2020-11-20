@@ -20,7 +20,12 @@ import java.util.Scanner;
          
 
     } // end main
-
-
+  
+    private boolean seenBefore(T anEntry) {
+        checkIntegrity();
+        if (getFrequencyOf(anEntry) > 0) { // if number of times word is in array bag is more than 0
+            return true;
+        }
+        System.out.println("Correct!");
 
  }// end MemoryGame
