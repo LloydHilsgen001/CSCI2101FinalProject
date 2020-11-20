@@ -133,7 +133,7 @@ public final class ArrayBag<T> implements BagInterface<T> {
     }
 
     private void checkIntegrity() {
-        if (integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
+        if (!integrityOk) throw new SecurityException("ArrayBag object is corrupt.");
     }
 
 }
